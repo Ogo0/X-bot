@@ -16,7 +16,7 @@ async function getBotReply(userPrompt) {
   const response = await fetch('https://llm.bankr.bot', {
     method: 'POST',
     headers: {
-      'Authorization': Bearer ${process.env.BANKRLLMKEY},
+      'Authorization': 'Bearer ' + process.env.BANKRLLMKEY,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
