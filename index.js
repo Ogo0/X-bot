@@ -14,10 +14,15 @@ let lastSeenId = null;
 
 async function getBotReply(userPrompt) {
   try {
+    if (!process.env.BANKRLLMKEY) {
+      console.error('BANKRLLMKEY environment variable is not set');
+      return 'gn';
+    }
+
     const response = await fetch('https://llm.bankr.bot', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + process.env.BANKRLLMKEY,
+        'Authorization': Bearer ${process.env.BANKRLLMKEY},
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -35,10 +40,16 @@ async function getBotReply(userPrompt) {
       }),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(getBotReply http error: ${response.status} - ${errorText});
+      return 'gn';
+    }
+
     const data = await response.json();
     return data.choices?.[0]?.message?.content || 'gn';
   } catch (err) {
-    console.error('getBotReply error:', err.message);
+    console.error('getBotReply network/runtime error:', err.message);
     return 'gn';
   }
 }
