@@ -22,7 +22,13 @@ async function getBotReply(userPrompt) {
     body: JSON.stringify({
       model: 'claude-sonnet-4.6',
       messages: [
-        {
+        { role: 'user', content: userPrompt }
+      ]
+    })
+  });
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
           role: 'system',
           content: 'you are a witty crypto agent. reply concisely in lowercase with sharp improv banter. no emojis, no fluff.',
         },
