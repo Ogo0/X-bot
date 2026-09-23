@@ -13,35 +13,34 @@ const rwClient = twitterClient.readWrite;
 let lastSeenId = null;
 
 async function getBotReply(userPrompt) {
-  const response = await fetch('https://llm.bankr.bot', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.BANKRLLMKEY,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4.6',
-      messages: [
-        { role: 'user', content: userPrompt }
-      ]
-    })
-  });
-  const data = await response.json();
-  return data.choices[0].message.content;
-}
-          role: 'system',
-          content: 'you are a witty crypto agent. reply concisely in lowercase with sharp improv banter. no emojis, no fluff.',
-        },
-        {
-          role: 'user',
-          content: userPrompt,
-        },
-      ],
-    }),
-  });
+  try {
+    const response = await fetch('https://llm.bankr.bot', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + process.env.BANKRLLMKEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4.6',
+        messages: [
+          {
+            role: 'system',
+            content: 'you are a witty crypto agent. reply concisely in lowercase with sharp improv banter. no emojis, no fluff.',
+          },
+          {
+            role: 'user',
+            content: userPrompt,
+          },
+        ],
+      }),
+    });
 
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || 'gn';
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || 'gn';
+  } catch (err) {
+    console.error('getBotReply error:', err.message);
+    return 'gn';
+  }
 }
 
 async function checkMentions() {
