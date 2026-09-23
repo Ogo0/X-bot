@@ -1,0 +1,8 @@
+{
+  "name": "x-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "twitter-api-v2": "^1.18.0"
+  }
+}
